@@ -19,12 +19,11 @@ const MeetingActions = () => {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { data: session } = useSession()
-  console.log(session)
 
   const handleJoinMeeting = () => {
     if (meetingLink) {
       setIsLoading(true)
-      const formattedLink = meetingLink.includes("https")
+      const formattedLink = meetingLink.includes("http")
         ? meetingLink
         : `/video-meeting/${meetingLink}`
       router.push(formattedLink)
@@ -37,13 +36,13 @@ const MeetingActions = () => {
   const handleStartMeeting = () => {
     setIsLoading(true)
     const roomId = uuidv4()
-    router.push(`/${roomId}?meetings=${session?.user?.id}`)
+    router.push(`/video-meeting/${roomId}?meetings=${session?.user?.id}`)
     toast.info("Starting a new meeting...")
   }
 
   const handleCreateMeetingForLater = () => {
     const roomId = uuidv4()
-    const link = `/video-meeting/${roomId}?meetings=${session?.user?.id}`
+    const link = `/${roomId}?meetings=${session?.user?.id}`
     setGeneratedMeetingLink(link)
     setIsDialogOpen(true)
     toast.success("Meeting link created successfully!")
