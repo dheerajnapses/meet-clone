@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import GithubProvider from 'next-auth/providers/github'
 import User from '@/models/User'
@@ -26,47 +26,32 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id;
-      }
+      session.user.id = token.id; 
       return session;
     },
-    async signIn({ user, account, profile }) {
-      try {
-        await dbConnect();
-        let dbUser = await User.findOne({ email: user.email });
-        if (!dbUser) {
-          dbUser = await User.create({
-            name: profile?.name,
-            email: profile?.email,
-            profilePicture: profile?.image,
-            isVerified: profile?.email_verified ? true : false,
-          });
-        }
-        user.id = dbUser._id.toString();
-        return true;
-      } catch (error) {
-        console.error('Error during sign in:', error);
-        return false;
+    async signIn({ user, profile }) {
+      await dbConnect();
+      let dbUser = await User.findOne({ email: user.email });
+      if (!dbUser) {
+        dbUser = await User.create({
+          name: profile.name,
+          email: profile.email,
+          profilePicture: profile.picture,
+          isVerified: profile.email_verified ? true : false,
+        });
       }
-    },
-    async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url
-      return baseUrl
+       user.id= dbUser._id.toString();
+      return true;
     },
   },
   session: {
-    strategy: 'jwt',
-    maxAge: 90 * 24 * 60 * 60, // 90 days
+    strategy: 'jwt', 
+    maxAge: 90 * 24 * 60 * 60, 
   },
   pages: {
     signIn: '/user-auth',
   },
 }
-
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
