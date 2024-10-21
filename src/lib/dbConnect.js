@@ -1,21 +1,41 @@
-// lib/dbConnect.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
-const dbConnect = async () => {
-  if (mongoose.connection.readyState >= 1) {
-    console.log('MongoDB is already connected');
-    return;
+const MONGODB_URI = process.env.MONGODB_URI
+
+if (!MONGODB_URI) {
+  throw new Error('Please define the MONGODB_URI environment variable inside .env.local')
+}
+
+let cached = global.mongoose
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null }
+}
+
+async function dbConnect() {
+  if (cached.conn) {
+    return cached.conn
   }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+      serverSelectionTimeoutMS: 5000, // Reduce server selection timeout
+    }
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      return mongoose
+    })
+  }
+
   try {
-    console.log('Connecting to MongoDB...');
-    await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected successfully');
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
+    cached.conn = await cached.promise
+  } catch (e) {
+    cached.promise = null
+    throw e
   }
-};
 
-module.exports = dbConnect;
+  return cached.conn
+}
+
+export default dbConnect
