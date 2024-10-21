@@ -97,7 +97,7 @@ const MeetingActions = () => {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-sm rounded-lg p-6">
           <DialogHeader>
-            <DialogTitle className="text-3xl font-normal">Here's your joining information</DialogTitle>
+            <DialogTitle className="text-3xl font-normal">Here your joining information</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col space-y-4">
             <p className="text-sm text-gray-600 dark:text-gray-300">

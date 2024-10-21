@@ -75,7 +75,7 @@ const AuthLogin = () => {
               Login with GitHub
             </Button>
             <p className="text-sm text-center text-gray-600 dark:text-gray-400">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="#" className="text-blue-600 hover:underline dark:text-blue-400">
                 Create now
               </Link>
