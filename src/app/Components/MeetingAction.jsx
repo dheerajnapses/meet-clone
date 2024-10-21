@@ -19,6 +19,7 @@ const MeetingActions = () => {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const { data: session } = useSession()
+  console.log(session)
 
   const handleJoinMeeting = () => {
     if (meetingLink) {
@@ -42,7 +43,7 @@ const MeetingActions = () => {
 
   const handleCreateMeetingForLater = () => {
     const roomId = uuidv4()
-    const link = `${process.env.NEXTAUTH_URL}/${roomId}?meetings=${session?.user?.id}`
+    const link = `/video-meeting/${roomId}?meetings=${session?.user?.id}`
     setGeneratedMeetingLink(link)
     setIsDialogOpen(true)
     toast.success("Meeting link created successfully!")
