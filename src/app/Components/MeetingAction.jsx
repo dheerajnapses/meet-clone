@@ -37,7 +37,7 @@ const MeetingActions = () => {
   const handleStartMeeting = () => {
     setIsLoading(true)
     const roomId = uuidv4()
-    router.push(`/video-meeting/${roomId}?meetings=${session?.user?.id}`)
+    router.push(`/${roomId}?meetings=${session?.user?.id}`)
     toast.info("Starting a new meeting...")
   }
 
