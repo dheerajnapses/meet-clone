@@ -23,7 +23,7 @@ const MeetingActions = () => {
   const handleJoinMeeting = () => {
     if (meetingLink) {
       setIsLoading(true)
-      const formattedLink = meetingLink.includes("http")
+      const formattedLink = meetingLink.includes("https")
         ? meetingLink
         : `/video-meeting/${meetingLink}`
       router.push(formattedLink)
@@ -42,7 +42,7 @@ const MeetingActions = () => {
 
   const handleCreateMeetingForLater = () => {
     const roomId = uuidv4()
-    const link = `http://localhost:3000/video-meeting/${roomId}?meetings=${session?.user?.id}`
+    const link = `${process.env.NEXTAUTH_URL}/${roomId}?meetings=${session?.user?.id}`
     setGeneratedMeetingLink(link)
     setIsDialogOpen(true)
     toast.success("Meeting link created successfully!")
