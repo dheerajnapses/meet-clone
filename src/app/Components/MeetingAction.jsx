@@ -110,7 +110,7 @@ const MeetingActions = () => {
             </p>
             <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
               <span className="text-gray-700 dark:text-gray-200 break-all">
-                {generatedMeetingLink.slice(0,30)}
+                {generatedMeetingLink.slice(0,30)}...
               </span>
               <Button variant="ghost" className="hover:bg-gray-200" onClick={copyToClipboard}>
                 <Copy className="w-5 h-5 text-orange-300" />
