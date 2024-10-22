@@ -29,7 +29,7 @@ const MeetingActions = () => {
       setIsLoading(true)
       const formattedLink = meetingLink.includes("http")
         ? meetingLink
-        : ${baseUrl}/video-meeting/${meetingLink}
+        : `${baseUrl}/video-meeting/${meetingLink}`
       router.push(formattedLink)
       toast.info("Joining meeting...")
     } else {
@@ -40,14 +40,14 @@ const MeetingActions = () => {
   const handleStartMeeting = () => {
     setIsLoading(true)
     const roomId = uuidv4()
-    const meetingUrl = ${baseUrl}/video-meeting/${roomId}?meetings=${session?.user?.id}
+    const meetingUrl = `${baseUrl}/video-meeting/${roomId}?meetings=${session?.user?.id}`
     router.push(meetingUrl)
     toast.info("Starting a new meeting...")
   }
 
   const handleCreateMeetingForLater = () => {
     const roomId = uuidv4()
-    const link = ${baseUrl}/video-meeting/${roomId}?meetings=${session?.user?.id}
+    const link = `${baseUrl}/video-meeting/${roomId}?meetings=${session?.user?.id}`
     setGeneratedMeetingLink(link)
     setIsDialogOpen(true)
     toast.success("Meeting link created successfully!")
