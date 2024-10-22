@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -11,21 +11,25 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { toast } from 'react-toastify'
 import Loader from "./Loader"
 
-
 const MeetingActions = () => {
   const [meetingLink, setMeetingLink] = useState("")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [generatedMeetingLink, setGeneratedMeetingLink] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [baseUrl, setBaseUrl] = useState("")
   const router = useRouter()
   const { data: session } = useSession()
+
+  useEffect(() => {
+    setBaseUrl(window.location.origin)
+  }, [])
 
   const handleJoinMeeting = () => {
     if (meetingLink) {
       setIsLoading(true)
       const formattedLink = meetingLink.includes("http")
         ? meetingLink
-        : `/video-meeting/${meetingLink}`
+        : ${baseUrl}/video-meeting/${meetingLink}
       router.push(formattedLink)
       toast.info("Joining meeting...")
     } else {
@@ -36,13 +40,14 @@ const MeetingActions = () => {
   const handleStartMeeting = () => {
     setIsLoading(true)
     const roomId = uuidv4()
-    router.push(`/video-meeting/${roomId}?meetings=${session?.user?.id}`)
+    const meetingUrl = ${baseUrl}/video-meeting/${roomId}?meetings=${session?.user?.id}
+    router.push(meetingUrl)
     toast.info("Starting a new meeting...")
   }
 
   const handleCreateMeetingForLater = () => {
     const roomId = uuidv4()
-    const link = `/${roomId}?meetings=${session?.user?.id}`
+    const link = ${baseUrl}/video-meeting/${roomId}?meetings=${session?.user?.id}
     setGeneratedMeetingLink(link)
     setIsDialogOpen(true)
     toast.success("Meeting link created successfully!")
@@ -97,7 +102,7 @@ const MeetingActions = () => {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-sm rounded-lg p-6">
           <DialogHeader>
-            <DialogTitle className="text-3xl font-normal">Here your joining information</DialogTitle>
+            <DialogTitle className="text-3xl font-normal">Here's your joining information</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col space-y-4">
             <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -105,7 +110,7 @@ const MeetingActions = () => {
             </p>
             <div className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
               <span className="text-gray-700 dark:text-gray-200 break-all">
-                {generatedMeetingLink.slice(0, 30)}...
+                {generatedMeetingLink}
               </span>
               <Button variant="ghost" className="hover:bg-gray-200" onClick={copyToClipboard}>
                 <Copy className="w-5 h-5 text-orange-300" />

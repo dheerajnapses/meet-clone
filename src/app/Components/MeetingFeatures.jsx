@@ -23,14 +23,28 @@ const slides = [
 ]
 
 const MeetingFeatures = () => {
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const [currentSlide, setCurrentSlide] = useState(0) // Initialize current slide index to 0
 
+  // Function to go to the next slide
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
+    // Example: if currentSlide is 0, and slides.length is 3:
+    // currentSlide = 0
+    // nextIndex = (0 + 1) % 3 = 1
+    // After calling nextSlide, currentSlide will be set to 1
+
+    const nextIndex = (currentSlide + 1) % slides.length; // Calculate next slide index
+    setCurrentSlide(nextIndex); // Set currentSlide to nextIndex
   }
 
+  // Function to go to the previous slide
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+    // Example: if currentSlide is 0, and slides.length is 3:
+    // currentSlide = 0
+    // prevIndex = (0 - 1 + 3) % 3 = 2
+    // After calling prevSlide, currentSlide will be set to 2 (looping back to last slide)
+
+    const prevIndex = (currentSlide - 1 + slides.length) % slides.length; // Calculate previous slide index
+    setCurrentSlide(prevIndex); // Set currentSlide to prevIndex
   }
 
   return (
