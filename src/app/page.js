@@ -60,7 +60,7 @@ const HomePage = () => {
                 Video calls and meetings for everyone
               </h1>
               <p className="text-3xl text-gray-600 dark:text-gray-300 mb-12">
-                Connect, collaborate, and celebrate from anywhere with MeetClone
+                Connect, collaborate, and celebrate from anywhere with Google Meet
               </p>
               <MeetingActions />
             </div>
